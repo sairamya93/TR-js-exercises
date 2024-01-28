@@ -1,181 +1,263 @@
 import {
-	sumMultiples,
-	isValidDNA,
-	getComplementaryDNA,
-	isItPrime,
-	createMatrix,
-	areWeCovered,
-	getWordFrequencies,
-} from '../challenges/exercise4';
+  sumMultiples,
+  isValidDNA,
+  getComplementaryDNA,
+  isItPrime,
+  createMatrix,
+  areWeCovered,
+} from "../challenges/exercise5";
 
-describe('findNextNumber', () => {
-	test('returns the next number after the given number in the array', () => {
-		expect(findNextNumber([5, 3, 7, 8, 1, 10], 7)).toBe(8);
-		expect(findNextNumber([5, 3, 7, 8, 1, 10], 1)).toBe(10);
-		expect(findNextNumber([4, 22, 654, 123, 65, 23, 40, 1], 22)).toBe(654);
-	});
+describe("sumMultiples", () => {
+  test("throws an error when no input given", () => {
+    expect(() => {
+      sumMultiples();
+    }).toThrow("Input array is required");
+  });
 
-	test('if the number is not found in the array, returns null', () => {
-		expect(findNextNumber([5, 3, 7, 8, 1, 10], 55)).toBe(null);
-	});
+  test("throws an error when input is not array", () => {
+    expect(() => {
+      sumMultiples("10");
+    }).toThrow("Input should be an array");
+  });
+  test("returns the sum of the numbers that are multiples of 3 or 5 ", () => {
+    expect(sumMultiples([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])).toBe(33);
+  });
 
-	test('if the number is found more than once, returns the number after the first instance', () => {
-		expect(findNextNumber([5, 3, 7, 8, 1, 3, 10], 3)).toBe(7);
-	});
+  test("returns 0 if there are no multiples of 3 or 5", () => {
+    expect(sumMultiples([2, 4, 8, 7])).toBe(0);
+  });
 
-	test('if the number is found in the final index position of the array, returns null', () => {
-		expect(findNextNumber([5, 3, 7, 8, 1, 3, 10], 10)).toBe(null);
-	});
+  test("returns the sum if there are only multiples of 3", () => {
+    expect(sumMultiples([9, 21, 22, 23, 28])).toBe(30);
+  });
+
+  test("returns the sum if there are only multiples of 5", () => {
+    expect(sumMultiples([65, 2, 4, 7, 5])).toBe(70);
+  });
+
+  test("checking if it returns the sum for decimal multiples of 3 or 5 ", () => {
+    expect(sumMultiples([1.5, 9.3, 5.0, 4.5, 25.0, 24])).toBe(54);
+    expect(sumMultiples([0.9])).toBe(0);
+  });
+  test("checking if it returns the sum for negative multiples of 3 or 5 ", () => {
+    expect(sumMultiples([-9, -5, -6, -11, -8, 50])).toBe(30);
+    expect(sumMultiples([-10])).toBe(-10);
+  });
 });
 
-describe('count1sand0s', () => {
-	test('returns an object with the count of 1s and 0s in a string', () => {
-		expect(count1sand0s('11000')).toEqual({
-			1: 2,
-			0: 3,
-		});
+describe("isValidDNA", () => {
+  test("throws an error when no input given", () => {
+    expect(() => {
+      isValidDNA();
+    }).toThrow("str is required");
+  });
+  test("throws an error when input is not string", () => {
+    expect(() => {
+      isValidDNA(123);
+    }).toThrow("Input should be a string");
+  });
+  test("returns true for a valid DNA string either uppercase or lowercase", () => {
+    expect(isValidDNA("GGGCCTTAAA")).toBe(true);
+    expect(isValidDNA("ACG")).toBe(true);
+    expect(isValidDNA("cgtaaaaa")).toBe(true);
+  });
 
-		expect(count1sand0s('0101010111')).toEqual({
-			1: 6,
-			0: 4,
-		});
-
-		expect(count1sand0s('1111111')).toEqual({
-			1: 7,
-			0: 0,
-		});
-
-		expect(count1sand0s('0111')).toEqual({
-			1: 3,
-			0: 1,
-		});
-	});
+  test("returns false for a string with other alphabets", () => {
+    expect(isValidDNA("YRQWUI")).toBe(false);
+    expect(isValidDNA("GHJyur")).toBe(false);
+  });
+  test("returns false for a string with valid characters with numbers and special characters", () => {
+    expect(isValidDNA("1234CGTAngd")).toBe(false);
+    expect(isValidDNA("CGta&$345")).toBe(false);
+  });
 });
 
-describe('reverseNumber', () => {
-	test('reverses the digits of a number', () => {
-		expect(reverseNumber(5)).toBe(5);
-		expect(reverseNumber(104)).toBe(401);
-		expect(reverseNumber(12345)).toBe(54321);
-		expect(reverseNumber(100)).toBe(1); // No leading 0 necessary
-	});
+describe("getComplementaryDNA", () => {
+  test("throws an error when no input given", () => {
+    expect(() => {
+      getComplementaryDNA();
+    }).toThrow("str is required");
+  });
+
+  test("throws an error when input is not string", () => {
+    expect(() => {
+      getComplementaryDNA(22);
+    }).toThrow("Input should be a string");
+  });
+
+  test("returns the correct complementary DNA string", () => {
+    expect(getComplementaryDNA("CGTA")).toBe("GCAT");
+    expect(getComplementaryDNA("GGGG")).toBe("CCCC");
+    expect(getComplementaryDNA("cgtaaa")).toBe("GCATTT");
+  });
+
+  test("returns a string mentioning to input only DNA characters when given invalid characters", () => {
+    expect(getComplementaryDNA("CGTEQA")).toBe(
+      "Input string should contain only DNA characters A,C,T,G"
+    );
+    expect(getComplementaryDNA("wq")).toBe(
+      "Input string should contain only DNA characters A,C,T,G"
+    );
+  });
 });
 
-describe('sumArrays', () => {
-	test('returns the total of the numbers in all sub arrays', () => {
-		const arrs = [[1, 2, 3], [6, 3, 1], [1], [9, 10], [3, 5]];
-		expect(sumArrays(arrs)).toBe(44);
-	});
+describe("isItPrime", () => {
+  test("throws an error when no input given", () => {
+    expect(() => {
+      isItPrime();
+    }).toThrow("Number is required");
+  });
+
+  test("throws an error when input is not integer", () => {
+    expect(() => {
+      isItPrime("22");
+    }).toThrow("Input should be a number");
+  });
+  test("throws an error when input is a negative number", () => {
+    expect(() => {
+      isItPrime(-5);
+    }).toThrow("Input should be a positive number");
+  });
+
+  test("throws an error when input is a decimal number", () => {
+    expect(() => {
+      isItPrime(6.3);
+    }).toThrow("Input should be a integer");
+  });
+  test("returns true when the number is prime", () => {
+    expect(isItPrime(11)).toBe(true);
+    expect(isItPrime(19)).toBe(true);
+  });
+  test("returns false when the number is not prime", () => {
+    expect(isItPrime(6)).toBe(false);
+    expect(isItPrime(4)).toBe(false);
+  });
 });
 
-describe('arrShift', () => {
-	test('returns an array with the first and last items swapped', () => {
-		expect(arrShift([1, 2])).toEqual([2, 1]);
-		expect(arrShift([1, 2, 3])).toEqual([3, 2, 1]);
-		expect(arrShift([1, 2, 3, 4])).toEqual([4, 2, 3, 1]);
-	});
+describe("createMatrix", () => {
+  test("throws an error when no number is given", () => {
+    expect(() => {
+      createMatrix();
+    }).toThrow("n is required");
+  });
 
-	test('makes no difference when the array length is < 2', () => {
-		expect(arrShift([1])).toEqual([1]);
-		expect(arrShift([])).toEqual([]);
-	});
+  test("throws an error when no fill is given", () => {
+    expect(() => {
+      createMatrix(3);
+    }).toThrow("fill is required");
+  });
+
+  test("throws an error when no is a decimal number", () => {
+    expect(() => {
+      createMatrix(3.2, "foo");
+    }).toThrow("Input should be a integer");
+  });
+
+  test("returns the correct matrix for a string fill", () => {
+    expect(createMatrix(3, "hi")).toEqual([
+      ["hi", "hi", "hi"],
+      ["hi", "hi", "hi"],
+      ["hi", "hi", "hi"],
+    ]);
+  });
+
+  test("returns the correct matrix for a number fill", () => {
+    expect(createMatrix(4, 4)).toEqual([
+      [4, 4, 4, 4],
+      [4, 4, 4, 4],
+      [4, 4, 4, 4],
+      [4, 4, 4, 4],
+    ]);
+  });
+
+  test("returns null matrix for a 0 number", () => {
+    expect(createMatrix(0, "hi")).toEqual([]);
+  });
+
+  test("returns null matrix for a negative number", () => {
+    expect(createMatrix(-3, 2)).toEqual([]);
+  });
 });
 
-describe('findNeedle', () => {
-	test('returns true if any of the properties of an object contain the specified string', () => {
-		const obj1 = {
-			name: 'LINNMON',
-			description: 'Small round table',
-			price: 31.89,
-			store: 'Warrington',
-			code: 12872,
-		};
-		expect(findNeedle(obj1, 'table')).toBe(true);
+describe("areWeCovered", () => {
+  test("throws an error when no array is given", () => {
+    expect(() => {
+      areWeCovered();
+    }).toThrow("staff is required");
+  });
 
-		// Note that the objects provided to the function could have any keys/values
-		const obj2 = {
-			product_name: 'Sparkle n Shine Dishwasher Tablets',
-			price: 1.99,
-			location: 'Hulme',
-			discounted: false,
-			available: true,
-		};
-		expect(findNeedle(obj2, 'Dishwasher')).toBe(true);
-	});
+  test("throws an error when no day is given", () => {
+    expect(() => {
+      areWeCovered([
+        { name: "Sally", rota: ["Monday", "Tuesday", "Friday"] },
+        { name: "Pedro", rota: ["Saturday", "Sunday", "Tuesday", "Wednesday"] },
+        { name: "Julie", rota: ["Friday", "Sunday", "Saturday", "Wednesday"] },
+        {
+          name: "Tim",
+          rota: ["Friday", "Monday", "Tuesday", "Wednesday", "Sunday"],
+        },
+      ]);
+    }).toThrow("day is required");
+  });
 
-	test('returns false if none of the properties of an object contain the specified string', () => {
-		const obj1 = {
-			name: 'LINNMON',
-			description: 'Small round table',
-			price: 31.89,
-			store: 'Warrington',
-			code: 12872,
-		};
-		expect(findNeedle(obj1, 'chair')).toBe(false);
+  test("returns true when the given day has minimum 3 staff", () => {
+    expect(
+      areWeCovered(
+        [
+          { name: "Sam", rota: ["Monday", "Tuesday", "Friday"] },
+          {
+            name: "Peter",
+            rota: ["Saturday", "Sunday", "Tuesday", "Wednesday"],
+          },
+          {
+            name: "Julie",
+            rota: ["Friday", "Sunday", "Saturday", "Wednesday"],
+          },
+          {
+            name: "Tim",
+            rota: ["Friday", "Monday", "Tuesday", "Wednesday", "Sunday"],
+          },
+        ],
+        "Sunday"
+      )
+    ).toBe(true);
+  });
 
-		// Note that the objects provided to the function could have any keys/values
-		const obj2 = {
-			product_name: 'Sparkle n Shine Dishwasher Tablets',
-			price: 1.99,
-			location: 'Hulme',
-			discounted: false,
-			available: true,
-		};
-		expect(findNeedle(obj2, 'Carpet Cleaner')).toBe(false);
-	});
+  test("returns false when the given day has less than 3 staff ", () => {
+    expect(
+      areWeCovered(
+        [
+          { name: "Sam", rota: ["Monday", "Tuesday", "Friday"] },
+          {
+            name: "Peter",
+            rota: ["Saturday", "Sunday", "Tuesday", "Wednesday"],
+          },
+        ],
+        "saturday"
+      )
+    ).toBe(false);
+  });
 
-	test('The search string should not be case sensitive', () => {
-		const obj1 = {
-			name: 'LINNMON',
-			description: 'Small round table',
-			price: 31.89,
-			store: 'Warrington',
-			code: 12872,
-		};
-
-		expect(findNeedle(obj1, 'warrington')).toBe(true);
-		expect(findNeedle(obj1, 'linnmon')).toBe(true);
-		expect(findNeedle(obj1, 'Liverpool')).toBe(false);
-	});
-});
-
-describe('getWordFrequencies', () => {
-	test('returns the frequencies of each word in a string', () => {
-		expect(getWordFrequencies('hello world')).toEqual({
-			hello: 1,
-			world: 1,
-		});
-
-		expect(getWordFrequencies('the cat is hairier than the rat')).toEqual({
-			the: 2,
-			cat: 1,
-			is: 1,
-			hairier: 1,
-			than: 1,
-			rat: 1,
-		});
-
-		expect(getWordFrequencies('hello hello hello')).toEqual({
-			hello: 3,
-		});
-	});
-
-	test('ignores capitalisation', () => {
-		expect(getWordFrequencies('Hello hello hello')).toEqual({
-			hello: 3,
-		});
-	});
-
-	test('ignores punctuation', () => {
-		// Hint: Google "JavaScript remove special characters from string" to get some ideas!
-		expect(
-			getWordFrequencies('Hello, hello hello! What have we here?')
-		).toEqual({
-			hello: 3,
-			what: 1,
-			have: 1,
-			we: 1,
-			here: 1,
-		});
-	});
+  test("returns true when the given day has 4 staff ", () => {
+    expect(
+      areWeCovered(
+        [
+          { name: "Sam", rota: ["Monday", "Tuesday", "Friday"] },
+          {
+            name: "Peter",
+            rota: ["Saturday", "Sunday", "Tuesday", "Wednesday"],
+          },
+          {
+            name: "Julie",
+            rota: ["Friday", "Sunday", "Saturday", "Wednesday", "Tuesday"],
+          },
+          {
+            name: "Tim",
+            rota: ["Friday", "Monday", "Tuesday", "Wednesday", "Sunday"],
+          },
+        ],
+        "tuesday"
+      )
+    ).toBe(true);
+  });
 });

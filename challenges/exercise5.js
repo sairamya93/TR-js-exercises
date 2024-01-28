@@ -11,19 +11,17 @@
  * @returns {Number}
  */
 export const sumMultiples = (arr) => {
-	if (arr === undefined) throw new Error('arr is required');
-   
-	const sum=0
-	for (let i=0;i<arr.length;i++)
-	{
-		sum+=arr[i]
-		if(sum%3===0 || sum %5 ===0)
-		{
-			return sum
-		}
-		
-	}
+  if (arr === undefined) throw new Error("Input array is required");
+  if (!Array.isArray(arr)) throw new Error("Input should be an array");
 
+  //Using reduce to check if each number in the array is divisible by 3 or 5 and return the aggregated value to the function.
+  return arr.reduce((sum, num) => {
+    if (num % 3 === 0 || num % 5 === 0) {
+      return sum + num;
+    } else {
+      return sum;
+    }
+  }, 0);
 };
 
 /**
@@ -32,9 +30,11 @@ export const sumMultiples = (arr) => {
  * @returns {Boolean}
  */
 export const isValidDNA = (str) => {
-	if (str === undefined) throw new Error('str is required');
+  if (str === undefined) throw new Error("str is required");
+  if (typeof str !== "string") throw new Error("Input should be a string");
 
-
+  //Using regular expression to check and return true if the string contains only the characters C, G, T or A else false
+  return /^[CGTA]+$/.test(str.toUpperCase());
 };
 
 /**
@@ -43,7 +43,30 @@ export const isValidDNA = (str) => {
  * @returns {String}
  */
 export const getComplementaryDNA = (str) => {
-	if (str === undefined) throw new Error('str is required');
+  if (str === undefined) throw new Error("str is required");
+  if (typeof str !== "string") throw new Error("Input should be a string");
+
+  //Checking for every character in the array and adding the complementary character to an array and return the value in string format.
+  const complementaryDNA = [];
+  for (let i = 0; i < str.length; i++) {
+    switch (str[i].toUpperCase()) {
+      case "A":
+        complementaryDNA.push("T");
+        break;
+      case "C":
+        complementaryDNA.push("G");
+        break;
+      case "G":
+        complementaryDNA.push("C");
+        break;
+      case "T":
+        complementaryDNA.push("A");
+        break;
+      default:
+        return "Input string should contain only DNA characters A,C,T,G";
+    }
+  }
+  return complementaryDNA.join("");
 };
 
 /**
@@ -52,7 +75,16 @@ export const getComplementaryDNA = (str) => {
  * @returns {Boolean}
  */
 export const isItPrime = (n) => {
-	if (n === undefined) throw new Error('n is required');
+  if (n === undefined) throw new Error("Number is required");
+  if (typeof n !== "number") throw new Error("Input should be a number");
+  if (n < 1) throw new Error("Input should be a positive number");
+  if (!Number.isInteger(n)) throw new Error("Input should be a integer");
+
+  //Checking if the no is divisible by every number from 2 to half the number
+  for (let i = 2; i <= Math.round(n / 2); i++) {
+    if (n % i === 0) return false;
+  }
+  return true;
 };
 
 /**
@@ -67,8 +99,22 @@ export const isItPrime = (n) => {
  * @returns {Array}
  */
 export const createMatrix = (n, fill) => {
-	if (n === undefined) throw new Error('n is required');
-	if (fill === undefined) throw new Error('fill is required');
+  if (n === undefined) throw new Error("n is required");
+  if (fill === undefined) throw new Error("fill is required");
+  if (!Number.isInteger(n)) throw new Error("Input should be a integer");
+
+  //Having a main array to track the number of arrays and sub array to fill the array with the given value
+  const mainArray = [];
+  let j = 0;
+  while (j < n) {
+    let subArray = [];
+    for (let i = 0; i < n; i++) {
+      subArray.push(fill);
+    }
+    mainArray.push(subArray);
+    j++;
+  }
+  return mainArray;
 };
 
 /**
@@ -84,6 +130,18 @@ export const createMatrix = (n, fill) => {
  * @returns {Boolean}
  */
 export const areWeCovered = (staff, day) => {
-	if (staff === undefined) throw new Error('staff is required');
-	if (day === undefined) throw new Error('day is required');
+  if (staff === undefined) throw new Error("staff is required");
+  if (day === undefined) throw new Error("day is required");
+
+  //Using map to check the lowercase day in each array object rota with the given day and increment the days if found
+  let cntDays = 0;
+  for (let i = 0; i < staff.length; i++) {
+    if (
+      staff[i].rota
+        .map((item) => item.toLowerCase())
+        .includes(day.toLowerCase())
+    )
+      cntDays++;
+  }
+  return cntDays >= 3;
 };

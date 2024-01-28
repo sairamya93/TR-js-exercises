@@ -8,6 +8,7 @@
  */
 export const sumDigits = (n) => {
 	if (n === undefined) throw new Error('n is required');
+	
 };
 
 /**
