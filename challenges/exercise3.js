@@ -27,17 +27,26 @@ export function getCities(users) {
   if (!users) throw new Error("users is required");
 
   let cities = [];
-  for (let i = 0; i < users.length; i++) {
+ 
+    users.forEach(element => {
+      const userCity = element.data.city.displayName;
+      if (userCity) {
+        cities.push(userCity);
+      }
+    });
+    return cities
+  }
+    //for (let i = 0; i < users.length; i++) {
     // Access the city name from each user object
-    const userCity = users[i].data.city.displayName;
+   // const userCity = users[i].data.city.displayName;
 
     // Check if the user has a city, and if so, add it to the array
-    if (userCity) {
-      cities.push(userCity);
-    }
-  }
-  return cities;
-}
+//     if (userCity) {
+//       cities.push(userCity);
+//     }
+//   }
+//   return cities;
+// }
 
 export function getSquareRoots(nums) {
   if (!nums) throw new Error("nums is required");
@@ -62,8 +71,11 @@ export function getLongestSides(triangles) {
   if (!triangles) throw new Error("triangles is required");
   //Using spread syntax to pass the elememts of the array to Math.max function
   let newArray = [];
-  for (let i = 0; i < triangles.length; i++) {
-    newArray.push(Math.max(...triangles[i]));
-  }
+  // for (let i = 0; i < triangles.length; i++) {
+  //   newArray.push(Math.max(...triangles[i]));
+  // }
+  triangles.forEach(element => {
+    newArray.push(Math.max(...element))
+  })
   return newArray;
 }
