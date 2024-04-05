@@ -30,18 +30,17 @@ export const sumDigits = (n) => {
 export const createRange = (start, end, step) => {
   if (start === undefined) throw new Error("start is required");
   if (end === undefined) throw new Error("end is required");
-  if (step === undefined) step=1
-    // console.log(
-    //   "FYI: Optional step parameter not provided. Remove this check once you've handled the optional step!"
-    // );
-    const numbersArray=[]
-    let arrayValue=start
-    while(arrayValue<=end) 
-    {
-      numbersArray.push(arrayValue);
-      arrayValue+=step
-    }
-    return numbersArray
+  if (step === undefined) step = 1;
+  // console.log(
+  //   "FYI: Optional step parameter not provided. Remove this check once you've handled the optional step!"
+  // );
+  const numbersArray = [];
+  let arrayValue = start;
+  while (arrayValue <= end) {
+    numbersArray.push(arrayValue);
+    arrayValue += step;
+  }
+  return numbersArray;
 };
 
 /**
@@ -76,6 +75,22 @@ export const createRange = (start, end, step) => {
 export const getScreentimeAlertList = (users, date) => {
   if (users === undefined) throw new Error("users is required");
   if (date === undefined) throw new Error("date is required");
+
+  const usersList = [];
+  for (let i = 0; i < users.length; i++) {
+    let matchedDateArray = users[i].screenTime.filter(
+      (itemObject) => itemObject.date === date
+    );
+    matchedDateArray.forEach((element) => {
+      let totalUsage = 0;
+      for (let key in element.usage) {
+        totalUsage += element.usage[key];
+      }
+      if (totalUsage > 100) usersList.push(users[i].username);
+    });
+  }
+
+  return usersList;
 };
 
 /**
