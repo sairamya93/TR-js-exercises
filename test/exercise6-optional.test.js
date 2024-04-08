@@ -2,6 +2,8 @@ import {
   sumDigits,
   createRange,
   getScreentimeAlertList,
+  hexToRGB,
+  findWinner
 } from "../challenges/exercise6-optional";
 
 describe("sumDigits", () => {
@@ -102,4 +104,60 @@ describe("getScreenTimeAlertList",() => {
     expect(actualResult).toEqual([])
    });  
   
+});
+
+describe("Colour code hexadecimal to decimal",() => {
+  //Arrange
+  const colourHexValue1="#FF1133"
+  const colourHexValue2="#bc2245"
+  test("returns rgb value",() => {
+    //Act
+    const expectedResult1=hexToRGB(colourHexValue1)
+    const expectedResult2=hexToRGB(colourHexValue2)
+    //Assert
+    expect(expectedResult1).toBe("rgb(255,17,51)")
+    expect(expectedResult2).toBe("rgb(188,34,69)")
+  });
+});
+
+describe("Invalid inputs",() => {
+  test("throws error when there is no input",() => {
+    expect(() => {
+      hexToRGB()
+    }).toThrow("hexStr is required")
+  }); 
+
+  test("throws error when input is not a string",() => {
+    expect(() => {
+      hexToRGB(1234)
+    }).toThrow("hexStr should be a string")
+  });   
+
+  test("throws error when input string length is not 7",() => {
+    const hexValue='#F415'
+    expect(() => {
+      hexToRGB(hexValue)}).toThrow("hexStr should be of 7 characters length")
+  }); 
+
+  test("throws error when input string first character is not #",() => {
+    const hexValue='F41523'
+    expect(() => {
+      hexToRGB(hexValue)}).toThrow("hexStr first character should be #")
+  }); 
+ 
+});
+
+describe("find winner in noughts and crosses",() => {
+  //Arrange
+  const boardData = [
+    ["X", "0", null],
+    ["X", null, "0"],
+    ["X", null, "0"]
+  ]
+  //Act
+  const expectedResult=findWinner(boardData)
+
+  test("X is the winner",() => {
+    expect(expectedResult).toBe("X")
+  });
 });

@@ -105,6 +105,16 @@ export const getScreentimeAlertList = (users, date) => {
  */
 export const hexToRGB = (hexStr) => {
   if (hexStr === undefined) throw new Error("hexStr is required");
+  if (typeof hexStr !== 'string') throw new Error("hexStr should be a string");
+
+  if (hexStr.slice(0,1) !== '#') throw new Error("hexStr first character should be #");  
+  if (hexStr.length !== 7) throw new Error("hexStr should be of 7 characters length");
+
+  const redValue=hexStr.slice(1,3)
+  const greenValue=hexStr.slice(3,5)
+  const blueValue=hexStr.slice(5)
+
+  return `rgb(${parseInt(redValue,16)},${parseInt(greenValue,16)},${parseInt(blueValue,16)})`
 };
 
 /**
@@ -119,4 +129,10 @@ export const hexToRGB = (hexStr) => {
  */
 export const findWinner = (board) => {
   if (board === undefined) throw new Error("board is required");
+  
+    if(board[0][0]=== 'X' && board[1][0]=== 'X' && board[2][0]==='X')
+    return 'X'   
+    if(board[0][1]=== 'X' && board[1][0]=== 'X' && board[2][0]==='X')
+    return 'X'  
+   
 };
